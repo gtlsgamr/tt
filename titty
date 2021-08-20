@@ -111,5 +111,7 @@ case "$1" in
 				*) 	 thelp;;
 			esac
 	;;
+	*)
+		thelp;;
 esac
 
