@@ -14,7 +14,7 @@ To stop current tracking:
 ```
 titty stop
 ```
-To start time from some time ago:
+To track hours from some time ago:
 ```
 titty start Task23 1hour
 titty start Task42 1min
