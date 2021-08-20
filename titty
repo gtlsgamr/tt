@@ -24,9 +24,9 @@ tdisp(){
 		'week')	 FMTSTRING='%w%Y';;
 		'day')	 FMTSTRING='%d%m%Y';;
 	esac
-	printf "%s\n" "----------------------------"
-	printf "%s\t%s\n" "Task" "Logged hours"
-	printf "%s\n" "----------------------------"
+	printf "%s\n" "----------------------------------------------------------------"
+	printf "%-25s\t%25s\n" "Task" "Logged hours"
+	printf "%s\n" "----------------------------------------------------------------"
 	total=0
 	while read -r NAME START STOP
 	do
@@ -34,11 +34,11 @@ tdisp(){
 		then
 			TIME=$(("$STOP" - "$START"))
 			total=$(("$total" + "$TIME"))
-			printf  "%s\t==> %s\n" "$NAME" "$(hms "$TIME")"
+			printf  "%-25s\t%25s\n" "$NAME" "$(hms "$TIME")"
 		fi 
 	done < "$CONFIG_DIR/masterlist"
-	printf "%s\n" "----------------------------"
-	printf "%s\t%s\n" "TOTAL:" "$(hms "$total")"
+	printf "%s\n" "----------------------------------------------------------------"
+	printf "%-25s\t%25s\n" "TOTAL:" "$(hms "$total")"
 }
 
 
