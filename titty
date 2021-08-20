@@ -1,0 +1,115 @@
+#!/bin/sh
+# _____  _                    ___              _____  _____ __   __
+#|_   _|(_) _ __   ___       |_ _| _ _        |_   _||_   _|\ \ / /
+#  | |  | || '  \ / -_)       | | | ' \         | |    | |   \   / 
+#  |_|  |_||_|_|_|\___|      |___||_||_|        |_|    |_|    |_|  
+#
+
+CONFIG_DIR="$HOME/.config/titty"
+[ -d "$CONFIG_DIR" ] || mkdir -p "$CONFIG_DIR"
+[ -f "$CONFIG_DIR/masterlist" ] || touch "$CONFIG_DIR/masterlist" 
+
+hms(){
+	H="$(($1 / 3600))"
+	M="$(($1 % 3600 / 60))"
+	S="$(($1 % 60))"
+	printf "%s hours, %s minutes, %s seconds" "$H" "$M" "$S"
+}
+
+tdisp(){
+	IFS="|";
+	case "$1" in
+		'month') FMTSTRING='%m%Y';;
+		'year')  FMTSTRING='%Y';;
+		'week')	 FMTSTRING='%w%Y';;
+		'day')	 FMTSTRING='%d%m%Y';;
+	esac
+	printf "%s\n" "----------------------------"
+	printf "%s\t%s\n" "Task" "Logged hours"
+	printf "%s\n" "----------------------------"
+	total=0
+	while read -r NAME START STOP
+	do
+		if [ "$(date --date=@"$START" +"$FMTSTRING")" -eq "$(date +"$FMTSTRING")" ]
+		then
+			TIME=$(("$STOP" - "$START"))
+			total=$(("$total" + "$TIME"))
+			printf  "%s\t==> %s\n" "$NAME" "$(hms "$TIME")"
+		fi 
+	done < "$CONFIG_DIR/masterlist"
+	printf "%s\n" "----------------------------"
+	printf "%s\t%s\n" "TOTAL:" "$(hms "$total")"
+}
+
+
+thelp(){
+	printf "%s\n%s\n%s\n%s\n\t%s\n\t%s\n" "Usage:" "- To start tracking time, titty start taskname" "- To stop the time track, titty stop" "- To track time from some time ago:" "titty start taskname 4h" "titty start taskname 50min"
+}
+
+tbackstart(){
+	STARTTIME="$(date -d "$(date -d "-$2")" +%s)"
+	if [ ! -f "$CONFIG_DIR/.timeison" ]
+	then
+		printf "%s|%s" "$1" "$STARTTIME" >> "$CONFIG_DIR/masterlist"
+		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
+		touch "$CONFIG_DIR/.timeison"
+	else
+		printf "%s\n" "Time is already being tracked ya doofus!"
+	fi
+
+}
+
+tstart(){
+	STARTTIME="$(date +%s)"
+	if [ ! -f "$CONFIG_DIR/.timeison" ]
+	then
+		printf "%s|%s" "$1" "$STARTTIME" >> "$CONFIG_DIR/masterlist"
+		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
+		touch "$CONFIG_DIR/.timeison"
+	else
+		printf "%s\n" "Time is already being tracked ya doofus!"
+	fi
+}
+
+tstop(){
+	if [ -f "$CONFIG_DIR/.timeison" ]
+	then
+		STOPTIME="$(date +%s)"
+		tmp="$(mktemp)"
+		tail -n1 "$CONFIG_DIR"/masterlist > "$tmp"
+		IFS="|" read -r NAME STARTTIME < "$tmp"
+		rm "$tmp"
+		printf "%s\n" "|$STOPTIME" >> "$CONFIG_DIR/masterlist"
+		TIMETAKEN=$(("$STOPTIME" - "$STARTTIME"))
+		printf "%s\n" "$(hms $TIMETAKEN) tracked for $NAME"
+		rm "$CONFIG_DIR/.timeison"
+	else
+		printf "%s\n" "You never started tracking the time, dummy!"
+	fi
+}
+
+case "$1" in
+	'help')
+		thelp ;;
+	'start')
+			case "$#" in
+				'0') help ;;
+				'1') help ;;
+				'2') tstart "$2";;
+				'3') tbackstart "$2" "$3" ;;
+				*) help;;
+			esac
+	;;
+
+	'stop')
+		tstop
+	;;
+
+	'display')
+			case "$#" in
+				'2') tdisp "$2" ;;
+				*) 	 thelp;;
+			esac
+	;;
+esac
+
