@@ -5,7 +5,9 @@
 #  |_|  |_||_|_|_|\___|      |___||_||_|        |_|    |_|    |_|  
 #
 
-CONFIG_DIR="$HOME/.config/titty"
+: ${XDG_CONFIG_HOME:="$HOME/.config"}
+: ${TITTY_CONFIG_DIR:="$XDG_CONFIG_HOME/titty"}
+CONFIG_DIR="$TITTY_CONFIG_DIR"
 [ -d "$CONFIG_DIR" ] || mkdir -p "$CONFIG_DIR"
 [ -f "$CONFIG_DIR/masterlist" ] || touch "$CONFIG_DIR/masterlist" 
 
