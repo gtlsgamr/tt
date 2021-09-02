@@ -9,7 +9,7 @@
 : ${TITTY_CONFIG_DIR:="$XDG_CONFIG_HOME/titty"}
 CONFIG_DIR="$TITTY_CONFIG_DIR"
 [ -d "$CONFIG_DIR" ] || mkdir -p "$CONFIG_DIR"
-[ -f "$CONFIG_DIR/masterlist" ] || touch "$CONFIG_DIR/masterlist" 
+[ -f "$CONFIG_DIR/masterlist" ] || rm -f "$CONFIG_DIR/.timeison"
 
 # Colors
 pr_green="\033[1;32m"
