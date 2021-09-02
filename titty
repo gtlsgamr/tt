@@ -11,6 +11,10 @@ CONFIG_DIR="$TITTY_CONFIG_DIR"
 [ -d "$CONFIG_DIR" ] || mkdir -p "$CONFIG_DIR"
 [ -f "$CONFIG_DIR/masterlist" ] || touch "$CONFIG_DIR/masterlist" 
 
+# Colors
+pr_green="\033[1;32m"
+pr_clear="\033[0m"
+
 hms(){
 	H="$(($1 / 3600))"
 	M="$(($1 % 3600 / 60))"
@@ -45,23 +49,24 @@ tdisp(){
 
 
 thelp(){
-	printf '%s\n' \
+	printf \
 "Usage:
-titty start [taskname]
+${pr_green}titty start [taskname]${pr_clear}
 	Start tracking time for a task.
 
-titty start taskname [time]
+${pr_green}titty start taskname [time]${pr_clear}
 	Start tracking time for a task from some time ago.
 	example:
 	titty start Task23 1hour
 	titty start Task42 1min
 	titty start Task43 54sec
 
-titty stop
+${pr_green}titty stop${pr_clear}
 	Stop tracking the current task.
 
-titty display [day|week|month|year]
-	Display tracked time."
+${pr_green}titty display [day|week|month|year]${pr_clear}
+	Display tracked time.
+"
 }
 
 tbackstart(){
