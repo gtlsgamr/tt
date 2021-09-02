@@ -66,6 +66,12 @@ ${pr_green}titty stop${pr_clear}
 
 ${pr_green}titty display [day|week|month|year]${pr_clear}
 	Display tracked time.
+
+${pr_green}titty help${pr_clear}
+	Display this help text.
+Configuration:
+	The default configuration files are located in ~/.config/titty/
+	This directory can be changed using the ${pr_green}\$TITTY_CONFIG_DIR${pr_clear} environment variable.
 "
 }
 
