@@ -65,7 +65,13 @@ tstart(){
 	STARTTIME="$(date +%s)"
 	if [ ! -f "$CONFIG_DIR/.timeison" ]
 	then
-		printf "%s|%s" "$1" "$STARTTIME" >> "$CONFIG_DIR/masterlist"
+		if [ -z "$1" ]; then
+			printf 'Task name: '
+			read -r task_name
+		else
+			task_name="$1"
+		fi
+		printf "%s|%s" "$task_name" "$STARTTIME" >> "$CONFIG_DIR/masterlist"
 		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
 		touch "$CONFIG_DIR/.timeison"
 	else
@@ -96,7 +102,7 @@ case "$1" in
 	'start')
 			case "$#" in
 				'0') help ;;
-				'1') help ;;
+				'1') tstart ;;
 				'2') tstart "$2";;
 				'3') tbackstart "$2" "$3" ;;
 				*) help;;
