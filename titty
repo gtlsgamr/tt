@@ -45,7 +45,23 @@ tdisp(){
 
 
 thelp(){
-	printf "%s\n%s\n%s\n%s\n\t%s\n\t%s\n%s\n%s\n" "Usage:" "- To start tracking time, titty start taskname" "- To stop the time track, titty stop" "- To track time from some time ago:" "titty start taskname 4h" "titty start taskname 50min" "To display tracked time:" "\t titty display [week|month|year|day]"
+	printf '%s\n' \
+"Usage:
+titty start [taskname]
+	Start tracking time for a task.
+
+titty start taskname [time]
+	Start tracking time for a task from some time ago.
+	example:
+	titty start Task23 1hour
+	titty start Task42 1min
+	titty start Task43 54sec
+
+titty stop
+	Stop tracking the current task.
+
+titty display [day|week|month|year]
+	Display tracked time."
 }
 
 tbackstart(){
@@ -101,11 +117,10 @@ case "$1" in
 		thelp ;;
 	'start')
 			case "$#" in
-				'0') help ;;
 				'1') tstart ;;
 				'2') tstart "$2";;
 				'3') tbackstart "$2" "$3" ;;
-				*) help;;
+				*) thelp;;
 			esac
 	;;
 
