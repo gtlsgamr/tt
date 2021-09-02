@@ -93,8 +93,10 @@ tstart(){
 	if [ ! -f "$CONFIG_DIR/.timeison" ]
 	then
 		if [ -z "$1" ]; then
-			printf 'Task name: '
-			read -r task_name
+			while [ -z "$task_name" ]; do
+				printf 'Task name: '
+				read -r task_name
+			done
 		else
 			task_name="$1"
 		fi
