@@ -122,8 +122,23 @@ tstop(){
 		rm "$tmp"
 		printf "%s\n" "|$STOPTIME" >> "$CONFIG_DIR/masterlist"
 		TIMETAKEN=$(("$STOPTIME" - "$STARTTIME"))
-		printf "%s\n" "$(hms $TIMETAKEN) tracked for $NAME"
+		printf "%s\n" "Stopped - $(hms $TIMETAKEN) tracked for $NAME"
 		rm "$CONFIG_DIR/.timeison"
+	else
+		printf "%s\n" "You never started tracking the time, dummy!"
+	fi
+}
+
+tstatus(){
+	if [ -f "$CONFIG_DIR/.timeison" ]
+	then
+		CURRENT_TIME="$(date +%s)"
+		tmp="$(mktemp)"
+		tail -n1 "$CONFIG_DIR"/masterlist > "$tmp"
+		IFS="|" read -r NAME STARTTIME < "$tmp"
+		rm "$tmp"
+		TIMETAKEN=$(("$CURRENT_TIME" - "$STARTTIME"))
+		printf "%s\n" "$(hms $TIMETAKEN) tracked for $NAME"
 	else
 		printf "%s\n" "You never started tracking the time, dummy!"
 	fi
@@ -152,6 +167,8 @@ case "$1" in
 				*) 	 thelp;;
 			esac
 	;;
+	'status')
+		tstatus;;
 	*)
 		thelp;;
 esac
