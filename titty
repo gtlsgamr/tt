@@ -64,6 +64,9 @@ ${pr_green}titty start taskname [time]${pr_clear}
 	titty start Task42 1min
 	titty start Task43 54sec
 
+${pr_green}titty status${pr_clear}
+	Display the time tracked so far for the current task.
+
 ${pr_green}titty stop${pr_clear}
 	Stop tracking the current task.
 
