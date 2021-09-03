@@ -29,6 +29,9 @@ tdisp(){
 		'year')  FMTSTRING='%Y';;
 		'week')	 FMTSTRING='%w%Y';;
 		'day')	 FMTSTRING='%d%m%Y';;
+		*) thelp;;
+
+
 	esac
 	printf "%s\n" "----------------------------------------------------------------"
 	printf "%-25s\t%25s\n" "Task" "Logged hours"
@@ -65,7 +68,7 @@ ${pr_green}titty stop${pr_clear}
 	Stop tracking the current task.
 
 ${pr_green}titty display [day|week|month|year]${pr_clear}
-	Display tracked time.
+Display tracked time (default is month).
 
 ${pr_green}titty help${pr_clear}
 	Display this help text.
@@ -73,6 +76,7 @@ Configuration:
 	The default configuration files are located in ~/.config/titty/
 	This directory can be changed using the ${pr_green}\$TITTY_CONFIG_DIR${pr_clear} environment variable.
 "
+exit
 }
 
 tbackstart(){
@@ -143,6 +147,7 @@ case "$1" in
 
 	'display')
 			case "$#" in
+				'1') tdisp 'month' ;;
 				'2') tdisp "$2" ;;
 				*) 	 thelp;;
 			esac
