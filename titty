@@ -180,8 +180,17 @@ case "$1" in
 			case "$#" in
 				'1') tstart ;;
 				'2') tstart "$2";;
-				'3') tbackstart "$2" "$3" ;;
-				*) thelp;;
+				*)
+					if [ ! "$#" -gt 3 ] && echo "$3" | grep -q '^[0-9]\+[a-zA-Z]\+$'; then
+						tbackstart "$2" "$3"
+					else
+						tstart "$(\
+							shift
+							for i in "$@"; do
+								printf '%s ' "$i"
+							done | head -c -1)"
+					fi
+					;;
 			esac
 	;;
 
