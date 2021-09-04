@@ -75,7 +75,10 @@ ${pr_green}titty stop${pr_clear}
 	Stop tracking the current task.
 
 ${pr_green}titty display [day|week|month|year|all]${pr_clear}
-Display tracked time (default is month).
+	Display tracked time (default is month).
+
+${pr_green}titty delete${pr_clear}
+	Delete the previous task.
 
 ${pr_green}titty help${pr_clear}
 	Display this help text.
