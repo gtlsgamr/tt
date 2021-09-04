@@ -6,9 +6,9 @@
 #
 
 CONFIG_DIR="${TITTY_CONFIG_DIR:="${XDG_CONFIG_HOME:="$HOME/.config"}"}/titty"
+masterlist="${TITTY_MASTERLIST:="$CONFIG_DIR/masterlist"}"
 
 [ -d "$CONFIG_DIR" ] || mkdir -p "$CONFIG_DIR"
-[ -f "$CONFIG_DIR/masterlist" ] || rm -f "$CONFIG_DIR/.timeison"
 
 # Colors
 pr_green="\033[1;32m"
@@ -19,6 +19,10 @@ hms(){
 	M="$(($1 % 3600 / 60))"
 	S="$(($1 % 60))"
 	printf "%s hours, %s minutes, %s seconds" "$H" "$M" "$S"
+}
+
+tcheck_tracking(){
+	[ ! -s "$masterlist" ] || tail -n1 "$masterlist" | cut -d'|' -f3 | grep -q '^[0-9]\+$' 2> /dev/null
 }
 
 tdisp(){
@@ -45,7 +49,7 @@ tdisp(){
 			total=$(("$total" + "$TIME"))
 			printf  "%-25s\t%25s\n" "$NAME" "$(hms "$TIME")"
 		fi 
-	done < "$CONFIG_DIR/masterlist"
+	done < "$masterlist"
 	printf "%s\n" "----------------------------------------------------------------"
 	printf "%-25s\t%25s\n" "TOTAL:" "$(hms "$total")"
 }
@@ -84,11 +88,10 @@ exit
 
 tbackstart(){
 	STARTTIME="$(date -d "$(date -d "-$2")" +%s)"
-	if [ ! -f "$CONFIG_DIR/.timeison" ]
+	if tcheck_tracking
 	then
-		printf "%s|%s" "$1" "$STARTTIME" >> "$CONFIG_DIR/masterlist"
+		printf "%s|%s" "$1" "$STARTTIME" >> "$masterlist"
 		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
-		touch "$CONFIG_DIR/.timeison"
 	else
 		printf "%s\n" "Time is already being tracked ya doofus!"
 	fi
@@ -97,7 +100,7 @@ tbackstart(){
 
 tstart(){
 	STARTTIME="$(date +%s)"
-	if [ ! -f "$CONFIG_DIR/.timeison" ]
+	if tcheck_tracking
 	then
 		if [ -z "$1" ]; then
 			while [ -z "$task_name" ]; do
@@ -107,33 +110,31 @@ tstart(){
 		else
 			task_name="$1"
 		fi
-		printf "%s|%s" "$task_name" "$STARTTIME" >> "$CONFIG_DIR/masterlist"
+		printf "%s|%s" "$task_name" "$STARTTIME" >> "$masterlist"
 		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
-		touch "$CONFIG_DIR/.timeison"
 	else
 		printf "%s\n" "Time is already being tracked ya doofus!"
 	fi
 }
 
 tstop(){
-	if [ -f "$CONFIG_DIR/.timeison" ]
+	if ! tcheck_tracking
 	then
 		STOPTIME="$(date +%s)"
 		tmp="$(mktemp)"
 		tail -n1 "$CONFIG_DIR"/masterlist > "$tmp"
 		IFS="|" read -r NAME STARTTIME < "$tmp"
 		rm "$tmp"
-		printf "%s\n" "|$STOPTIME" >> "$CONFIG_DIR/masterlist"
+		printf "%s\n" "|$STOPTIME" >> "$masterlist"
 		TIMETAKEN=$(("$STOPTIME" - "$STARTTIME"))
 		printf "%s\n" "Stopped - $(hms $TIMETAKEN) tracked for $NAME"
-		rm "$CONFIG_DIR/.timeison"
 	else
 		printf "%s\n" "You never started tracking the time, dummy!"
 	fi
 }
 
 tstatus(){
-	if [ -f "$CONFIG_DIR/.timeison" ]
+	if ! tcheck_tracking
 	then
 		CURRENT_TIME="$(date +%s)"
 		tmp="$(mktemp)"
