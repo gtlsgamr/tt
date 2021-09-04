@@ -77,8 +77,8 @@ ${pr_green}titty stop${pr_clear}
 ${pr_green}titty display [day|week|month|year|all]${pr_clear}
 	Display tracked time (default is month).
 
-${pr_green}titty delete${pr_clear}
-	Delete the previous task.
+${pr_green}titty delete [all]${pr_clear}
+	Delete the previous task or all tasks.
 
 ${pr_green}titty help${pr_clear}
 	Display this help text.
@@ -153,9 +153,17 @@ tstatus(){
 
 tdelete(){
 	if [ -s "$masterlist" ]; then
-		printf 'Deleted '
-		tail -n1 "$masterlist" | cut -d'|' -f1
-		sed -i '$d' "$masterlist"
+		case "$1" in
+			'all')
+				: > "$masterlist"
+				printf 'Deleted all tasks\n'
+				;;
+			*)
+				printf 'Deleted '
+				tail -n1 "$masterlist" | cut -d'|' -f1
+				sed -i '$d' "$masterlist"
+				;;
+		esac
 	else
 		printf '%s\n' 'No tasks to delete'
 	fi
@@ -187,7 +195,7 @@ case "$1" in
 	'status')
 		tstatus;;
 	'delete')
-		tdelete;;
+		tdelete "$2" ;;
 	*)
 		thelp;;
 esac
