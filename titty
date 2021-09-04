@@ -37,6 +37,7 @@ tdisp(){
 
 
 	esac
+	if [ "$(wc -l < "$masterlist")" -gt 0 ]; then
 	printf "%s\n" "----------------------------------------------------------------"
 	printf "%-25s\t%25s\n" "Tasks ($1)" "Logged hours"
 	printf "%s\n" "----------------------------------------------------------------"
@@ -52,6 +53,9 @@ tdisp(){
 	done < "$masterlist"
 	printf "%s\n" "----------------------------------------------------------------"
 	printf "%-25s\t%25s\n" "TOTAL:" "$(hms "$total")"
+	else
+		printf 'No completed tasks to display\n'
+	fi
 }
 
 
