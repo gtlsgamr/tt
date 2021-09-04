@@ -148,6 +148,16 @@ tstatus(){
 	fi
 }
 
+tdelete(){
+	if [ -s "$masterlist" ]; then
+		printf 'Deleted '
+		tail -n1 "$masterlist" | cut -d'|' -f1
+		sed -i '$d' "$masterlist"
+	else
+		printf '%s\n' 'No tasks to delete'
+	fi
+}
+
 case "$1" in
 	'help')
 		thelp ;;
@@ -173,6 +183,8 @@ case "$1" in
 	;;
 	'status')
 		tstatus;;
+	'delete')
+		tdelete;;
 	*)
 		thelp;;
 esac
