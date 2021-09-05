@@ -214,12 +214,13 @@ t_args(){
 
 case "$1" in
 	'start')
-			case "$#" in
-				'1') tstart ;;
-				'2') tstart "$2";;
-				'3') tbackstart "$2" "$3" ;;
-				*) thelp;;
-			esac
+		task_name="$(echo "${*#$1}" | tail -c+2)"
+		tstart "$task_name"
+	;;
+	'-t'|'--time')
+		task_name="$(echo "$*" | cut -d' ' -f3-)"
+		time="$2"
+		tbackstart "$task_name" "$time"
 	;;
 
 	'stop')
