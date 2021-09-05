@@ -95,6 +95,9 @@ exit
 }
 
 tbackstart(){
+	if
+		date -d "$2" > /dev/null
+	then
 	STARTTIME="$(date -d "$(date -d "-$2")" +%s)"
 	if tcheck_tracking
 	then
@@ -102,6 +105,9 @@ tbackstart(){
 		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
 	else
 		printf "%s\n" "Time is already being tracked ya doofus!"
+	fi
+	else
+		t_error_msg
 	fi
 
 }
