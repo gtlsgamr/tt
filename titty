@@ -5,6 +5,7 @@
 #  |_|  |_||_|_|_|\___|      |___||_||_|        |_|    |_|    |_|  
 #
 
+TITTY_VERSION='1.0.0'
 CONFIG_DIR="${TITTY_CONFIG_DIR:="${XDG_CONFIG_HOME:="$HOME/.config"}"}/titty"
 masterlist="${TITTY_MASTERLIST:="$CONFIG_DIR/masterlist"}"
 
@@ -171,11 +172,40 @@ tdelete(){
 	else
 		printf '%s\n' 'No tasks to delete'
 	fi
+	exit
+}
+
+t_args(){
+	while [ "$1" ]; do
+		case "$1" in
+			'-h'|'--help')
+				thelp
+				;;
+			'-v'|'--version')
+				echo "$TITTY_VERSION"
+				exit
+				;;
+			'-d'|'--delete')
+				tdelete "$2"
+				;;
+			-*)
+				printf "'%s' %s\n\t${pr_green}%s ${pr_clear}%s\n"\
+					"$1" "is an invalid option"\
+					"titty -h" "for more information"
+				exit
+				;;
+			*)
+				printf "%s ${pr_green}%s${pr_clear} %s\n\t${pr_green}%s ${pr_clear}%s\n"\
+					"Usage:" "titty start" "[taskname]"\
+					"titty -h" "for more information"
+				exit
+				;;
+		esac
+		shift
+	done
 }
 
 case "$1" in
-	'help')
-		thelp ;;
 	'start')
 			case "$#" in
 				'1') tstart ;;
@@ -198,9 +228,7 @@ case "$1" in
 	;;
 	'status')
 		tstatus;;
-	'delete')
-		tdelete "$2" ;;
 	*)
-		thelp;;
+		t_args "$@";;
 esac
 
