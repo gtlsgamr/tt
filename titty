@@ -101,6 +101,14 @@ tbackstart(){
 	STARTTIME="$(date -d "$(date -d "-$2")" +%s)"
 	if tcheck_tracking
 	then
+		if [ -z "$1" ]; then
+			while [ -z "$task_name" ]; do
+				printf 'Task name: '
+				read -r task_name
+			done
+		else
+			task_name="$1"
+		fi
 		printf "%s|%s" "$1" "$STARTTIME" >> "$masterlist"
 		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
 	else
