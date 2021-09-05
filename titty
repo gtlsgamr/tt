@@ -175,6 +175,19 @@ tdelete(){
 	exit
 }
 
+t_error_msg(){
+	if [ -n "$1" ]; then
+		printf "'%s' %s\n\t${pr_green}%s ${pr_clear}%s\n"\
+			"$1" "is an invalid option"\
+			"titty -h" "for more information"
+	else
+		printf "%s\n\t${pr_green}%s ${pr_clear}%s\n"\
+			"Invalid option"\
+			"titty -h" "for more information"
+	fi
+	exit
+}
+
 t_args(){
 	while [ "$1" ]; do
 		case "$1" in
@@ -189,16 +202,10 @@ t_args(){
 				tdelete "$2"
 				;;
 			-*)
-				printf "'%s' %s\n\t${pr_green}%s ${pr_clear}%s\n"\
-					"$1" "is an invalid option"\
-					"titty -h" "for more information"
-				exit
+				t_error_msg "$1"
 				;;
 			*)
-				printf "%s ${pr_green}%s${pr_clear} %s\n\t${pr_green}%s ${pr_clear}%s\n"\
-					"Usage:" "titty start" "[taskname]"\
-					"titty -h" "for more information"
-				exit
+				t_error_msg
 				;;
 		esac
 		shift
