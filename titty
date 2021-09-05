@@ -214,7 +214,7 @@ t_args(){
 
 case "$1" in
 	'start')
-		task_name="$(echo "${*#$1}" | tail -c+2)"
+		task_name="$(echo "$*" | cut -d' ' -f2-)"
 		tstart "$task_name"
 	;;
 	'-t'|'--time')
