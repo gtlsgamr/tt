@@ -5,7 +5,6 @@
 #  |_|  |_||_|_|_|\___|      |___||_||_|        |_|    |_|    |_|  
 #
 
-TITTY_VERSION='1.0.0'
 CONFIG_DIR="${TITTY_CONFIG_DIR:="${XDG_CONFIG_HOME:="$HOME/.config"}"}/titty"
 masterlist="${TITTY_MASTERLIST:="$CONFIG_DIR/masterlist"}"
 
@@ -175,50 +174,13 @@ tdelete(){
 	exit
 }
 
-t_error_msg(){
-	if [ -n "$1" ]; then
-		printf "'%s' %s\n\t${pr_green}%s ${pr_clear}%s\n"\
-			"$1" "is an invalid option"\
-			"titty -h or titty help" "for more information"
-	else
-		printf "%s\n\t${pr_green}%s ${pr_clear}%s\n"\
-			"Invalid option"\
-			"titty -h or titty help" "for more information"
-	fi
-	exit
-}
-
-t_args(){
-	while [ "$1" ]; do
-		case "$1" in
-			'-h'|'--help')
-				thelp
-				;;
-			'-v'|'--version')
-				echo "$TITTY_VERSION"
-				exit
-				;;
-			'-d'|'--delete')
-				tdelete "$2"
-				;;
-			-*)
-				t_error_msg "$1"
-				;;
-			*)
-				t_error_msg
-				;;
-		esac
-		shift
-	done
-}
-
 case "$1" in
 	'start')
 			case "$#" in
 				'1') tstart ;;
 				'2') tstart "$2";;
 				'3') tbackstart "$2" "$3" ;;
-				*) thelp;;
+				 *) thelp;;
 			esac
 	;;
 
@@ -228,6 +190,10 @@ case "$1" in
 
 	'help')
 		thelp
+	;;
+
+	'delete')
+		tdelete "$2"
 	;;
 
 	'display')
@@ -240,6 +206,6 @@ case "$1" in
 	'status')
 		tstatus;;
 	*)
-		t_args "$@";;
+		thelp;;
 esac
 
