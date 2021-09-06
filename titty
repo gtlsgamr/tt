@@ -179,11 +179,11 @@ t_error_msg(){
 	if [ -n "$1" ]; then
 		printf "'%s' %s\n\t${pr_green}%s ${pr_clear}%s\n"\
 			"$1" "is an invalid option"\
-			"titty -h" "for more information"
+			"titty -h or titty help" "for more information"
 	else
 		printf "%s\n\t${pr_green}%s ${pr_clear}%s\n"\
 			"Invalid option"\
-			"titty -h" "for more information"
+			"titty -h or titty help" "for more information"
 	fi
 	exit
 }
@@ -224,6 +224,10 @@ case "$1" in
 
 	'stop')
 		tstop
+	;;
+
+	'help')
+		thelp
 	;;
 
 	'display')
