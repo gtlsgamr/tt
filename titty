@@ -75,6 +75,9 @@ ${pr_green}titty start taskname [time]${pr_clear}
 ${pr_green}titty status${pr_clear}
 	Display the time tracked so far for the current task.
 
+${pr_green}titty raw${pr_clear}
+	Display the raw masterlist (for piping into other programs)
+
 ${pr_green}titty stop${pr_clear}
 	Stop tracking the current task.
 
@@ -138,6 +141,10 @@ tstop(){
 	else
 		printf "%s\n" "You never started tracking the time, dummy!"
 	fi
+}
+
+traw(){
+	cat $masterlist 
 }
 
 tstatus(){
@@ -205,6 +212,8 @@ case "$1" in
 	;;
 	'status')
 		tstatus;;
+	'raw')
+		traw;;
 	*)
 		thelp;;
 esac

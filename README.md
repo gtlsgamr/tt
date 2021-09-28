@@ -24,6 +24,10 @@ example:
 
 ```titty stop```
 
+  Display the raw masterlist (for piping into other programs)
+
+```titty raw```
+
 Stop tracking the current task.
 
 ```titty display [day|week|month|year|all]```
