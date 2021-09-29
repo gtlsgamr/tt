@@ -18,7 +18,7 @@ hms(){
 	H="$(($1 / 3600))"
 	M="$(($1 % 3600 / 60))"
 	S="$(($1 % 60))"
-	printf "%s hours, %s minutes, %s seconds" "$H" "$M" "$S"
+	printf "%sh%sm%ss" "$H" "$M" "$S"
 }
 
 tcheck_tracking(){
