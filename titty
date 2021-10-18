@@ -46,8 +46,8 @@ tdisp(){
 	do
 		if [ "$1" = 'all' ] || [ "$(date --date=@"$START" +"$FMTSTRING")" -eq "$(date +"$FMTSTRING")" ]
 		then
-			TIME=$(("$STOP" - "$START"))
-			total=$(("$total" + "$TIME"))
+			TIME=$(($STOP - $START))
+			total=$(($total + $TIME))
 			printf  "%-25s\t%25s\n" "$NAME" "$(hms "$TIME")"
 		fi 
 	done < "$masterlist"
@@ -136,7 +136,7 @@ tstop(){
 		IFS="|" read -r NAME STARTTIME < "$tmp"
 		rm "$tmp"
 		printf "%s\n" "|$STOPTIME" >> "$masterlist"
-		TIMETAKEN=$(("$STOPTIME" - "$STARTTIME"))
+		TIMETAKEN=$(($STOPTIME - $STARTTIME))
 		printf "%s\n" "Stopped - $(hms $TIMETAKEN) tracked for $NAME"
 	else
 		printf "%s\n" "You never started tracking the time, dummy!"
@@ -155,7 +155,7 @@ tstatus(){
 		tail -n1 "$CONFIG_DIR"/masterlist > "$tmp"
 		IFS="|" read -r NAME STARTTIME < "$tmp"
 		rm "$tmp"
-		TIMETAKEN=$(("$CURRENT_TIME" - "$STARTTIME"))
+		TIMETAKEN=$(($CURRENT_TIME - $STARTTIME))
 		printf "%s\n" "$(hms $TIMETAKEN) tracked for $NAME"
 	else
 		printf "%s\n" "You never started tracking the time, dummy!"
