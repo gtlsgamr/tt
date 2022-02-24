@@ -37,7 +37,7 @@ tdisp(){
 
 
 	esac
-	if [ "$(wc -l < "$masterlist")" -gt 0 ]; then
+	if [ -s "$masterlist" ]; then
 	printf "%s\n" "----------------------------------------------------------------"
 	printf "%-25s\t%25s\n" "Tasks ($1)" "Logged hours"
 	printf "%s\n" "----------------------------------------------------------------"
