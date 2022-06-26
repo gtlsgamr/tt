@@ -5,7 +5,7 @@
 #  |_|  |_||_|_|_|\___|      |___||_||_|        |_|    |_|    |_|  
 #
 
-CONFIG_DIR="${TITTY_CONFIG_DIR:="${XDG_CONFIG_HOME:="$HOME/.config"}"}/titty"
+CONFIG_DIR="${TITTY_CONFIG_DIR:="${XDG_CONFIG_HOME:="$HOME/.config"}"}/tt"
 masterlist="${TITTY_MASTERLIST:="$CONFIG_DIR/masterlist"}"
 
 [ -d "$CONFIG_DIR" ] || mkdir -p "$CONFIG_DIR"
@@ -62,35 +62,35 @@ tdisp(){
 thelp(){
 	printf \
 "Usage:
-${pr_green}titty start [taskname]${pr_clear}
+${pr_green}tt start [taskname]${pr_clear}
 	Start tracking time for a task.
 
-${pr_green}titty start taskname [time]${pr_clear}
+${pr_green}tt start taskname [time]${pr_clear}
 	Start tracking time for a task from some time ago.
 	example:
-	titty start Task23 1hour
-	titty start Task42 1min
-	titty start Task43 54sec
+	tt start Task23 1hour
+	tt start Task42 1min
+	tt start Task43 54sec
 
-${pr_green}titty status${pr_clear}
+${pr_green}tt status${pr_clear}
 	Display the time tracked so far for the current task.
 
-${pr_green}titty raw${pr_clear}
+${pr_green}tt raw${pr_clear}
 	Display the raw masterlist (for piping into other programs)
 
-${pr_green}titty stop${pr_clear}
+${pr_green}tt stop${pr_clear}
 	Stop tracking the current task.
 
-${pr_green}titty display [day|week|month|year|all]${pr_clear}
+${pr_green}tt display [day|week|month|year|all]${pr_clear}
 	Display tracked time (default is month).
 
-${pr_green}titty delete [all]${pr_clear}
+${pr_green}tt delete [all]${pr_clear}
 	Delete the previous task or all tasks.
 
-${pr_green}titty help${pr_clear}
+${pr_green}tt help${pr_clear}
 	Display this help text.
 Configuration:
-	The default configuration files are located in ~/.config/titty/
+	The default configuration files are located in ~/.config/tt/
 	This directory can be changed using the ${pr_green}\$TITTY_CONFIG_DIR${pr_clear} environment variable.
 "
 exit

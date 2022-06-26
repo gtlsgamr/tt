@@ -1,47 +1,47 @@
-# ti-tty
+# tt
 A command line time tracking shell script.
 
 ## Installation:
-Just copy the titty file to your path
+Just copy the tt file to your path
 
 ## Usage:
 
-```titty start [taskname]```
+```tt start [taskname]```
 
 Start tracking time for a task.
 
-```titty start taskname [time]```
+```tt start taskname [time]```
 
 Start tracking time for a task from some time ago.    
 example:    
-    titty start Task23 1hour    
-    titty start Task42 1min    
-    titty start Task43 54sec    
+    tt start Task23 1hour    
+    tt start Task42 1min    
+    tt start Task43 54sec    
 
-```titty status```
+```tt status```
 	
   Display the time tracked so far for the current task.
 
-```titty stop```
+```tt stop```
 
   Display the raw masterlist (for piping into other programs)
 
-```titty raw```
+```tt raw```
 
 Stop tracking the current task.
 
-```titty display [day|week|month|year|all]```
+```tt display [day|week|month|year|all]```
 
 Display tracked time (default is month).
 
-```titty delete [all]```
+```tt delete [all]```
 
 Delete the previous task or all tasks.
 
-```titty help```
+```tt help```
 
 Display this help text.
 
 Configuration:
-The default configuration files are located in ~/.config/titty/
+The default configuration files are located in ~/.config/tt/
 This directory can be changed using the \$TITTY_CONFIG_DIR environment variable.
