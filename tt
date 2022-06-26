@@ -5,8 +5,8 @@
 #  |_|  |_||_|_|_|\___|      |___||_||_|        |_|    |_|    |_|  
 #
 
-CONFIG_DIR="${TITTY_CONFIG_DIR:="${XDG_CONFIG_HOME:="$HOME/.config"}"}/tt"
-masterlist="${TITTY_MASTERLIST:="$CONFIG_DIR/masterlist"}"
+CONFIG_DIR="${TT_CONFIG_DIR:="${XDG_CONFIG_HOME:="$HOME/.config"}"}/tt"
+masterlist="${TT_MASTERLIST:="$CONFIG_DIR/masterlist"}"
 
 [ -d "$CONFIG_DIR" ] || mkdir -p "$CONFIG_DIR"
 
@@ -91,7 +91,7 @@ ${pr_green}tt help${pr_clear}
 	Display this help text.
 Configuration:
 	The default configuration files are located in ~/.config/tt/
-	This directory can be changed using the ${pr_green}\$TITTY_CONFIG_DIR${pr_clear} environment variable.
+	This directory can be changed using the ${pr_green}\$TT_CONFIG_DIR${pr_clear} environment variable.
 "
 exit
 }
