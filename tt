@@ -120,7 +120,7 @@ tstart(){
 		else
 			task_name="$1"
 		fi
-		printf "%s|%s|%s" "$task_name - $(date --iso)" "$STARTTIME" >> "$masterlist"
+		printf "%s|%s" "$task_name - $(date --iso)" "$STARTTIME" >> "$masterlist"
 		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
 	else
 		printf "%s\n" "Time is already being tracked ya doofus!"
