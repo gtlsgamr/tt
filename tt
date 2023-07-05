@@ -189,7 +189,39 @@ tdelete(){
 	exit
 }
 
+tsearch(){
+    if [ -z "$1" ]; then
+        printf 'Search term: '
+        read -r search_term
+    else
+        search_term="$1"
+    fi
+    printf "%s\n" "-----------------------------------------------------------------------------------------"
+    printf "%-25s\t%25s%25s\n" "Tasks" "Logged hours" "INCOME"
+    printf "%s\n" "-----------------------------------------------------------------------------------------"
+    total=0
+    total_income=0
+    while IFS="|" read -r NAME START RATE STOP
+    do
+        if echo "$NAME" | grep -iq "$search_term"
+        then
+            TIME=$((STOP - START))
+            total=$((total + TIME))
+            TIME_IN_HOURS=$(echo "scale=2; $TIME / 3600" | bc)
+            income=$(echo "$TIME_IN_HOURS * $RATE" | bc)
+            total_income=$(echo "scale=2; $total_income + $income" | bc)
+            printf  "%-25s\t%25s%25s\n" "$NAME" "$(hms "$TIME")" "$income"
+        fi 
+    done < "$masterlist"
+    printf "%s\n" "-----------------------------------------------------------------------------------------"
+    printf "%-25s\t%25s%25s\n" "TOTAL:" "$(hms "$total")" "$total_income"
+}
+
+
 case "$1" in
+	'search')
+        tsearch "$2"
+    ;;
 	'start')
 			case "$#" in
 				'1') tstart ;;
