@@ -128,7 +128,7 @@ tstart(){
 			printf 'Rate($/hour) - only enter the number: '
 			read -r rate
 		fi
-		printf "%s|%s|%s" "$task_name - $(date --iso)" "$STARTTIME" "$rate" >> "$masterlist"
+		printf "%s|%s|%s" "$task_name - $(date -j -f "%s" "$STARTTIME" +"%Y-%m-%d")" "$STARTTIME" "$rate" >> "$masterlist"
 		printf "%s\n" "Started at $(date -j -f "%s" "$STARTTIME") for $rate per hour"
 	else
 		printf "%s\n" "Time is already being tracked ya doofus!"
