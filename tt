@@ -45,7 +45,7 @@ tdisp(){
 	total_income=0
 	while read -r NAME START RATE STOP
 	do
-		if [ "$1" = 'all' ] || [ "$(date --date=@"$START" +"$FMTSTRING")" -eq "$(date +"$FMTSTRING")" ]
+		if [ "$1" = 'all' ] || [ "$(date -j -f "%s" "$START" +"$FMTSTRING")" -eq "$(date +"$FMTSTRING")" ]
 		then
 			TIME=$((STOP - START))
 			total=$((total + TIME))
@@ -101,11 +101,11 @@ exit
 }
 
 tbackstart(){
-	STARTTIME="$(date -d "$(date -d "-$2")" +%s)"
+	STARTTIME="$(date -j -f "%Y-%m-%d %H:%M:%S" "$(date -d "-$2" +"%Y-%m-%d %H:%M:%S")" +%s)"
 	if tcheck_tracking
 	then
 		printf "%s|%s" "$1" "$STARTTIME" >> "$masterlist"
-		printf "%s\n" "Started at $(date --date=@"$STARTTIME")"
+		printf "%s\n" "Started at $(date -j -f "%s" "$STARTTIME")"
 	else
 		printf "%s\n" "Time is already being tracked ya doofus!"
 	fi
@@ -129,7 +129,7 @@ tstart(){
 			read -r rate
 		fi
 		printf "%s|%s|%s" "$task_name - $(date --iso)" "$STARTTIME" "$rate" >> "$masterlist"
-		printf "%s\n" "Started at $(date --date=@"$STARTTIME") for $rate per hour"
+		printf "%s\n" "Started at $(date -j -f "%s" "$STARTTIME") for $rate per hour"
 	else
 		printf "%s\n" "Time is already being tracked ya doofus!"
 	fi
